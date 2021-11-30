@@ -7,15 +7,19 @@ public class MoveCharacter : MonoBehaviour
 {
     public Camera cam;
     public NavMeshAgent agent;
-    private Animator anim;
+    public Animator anim;
+
+    ///
+    public float currentSpeed;
     void Start()
     {
-        anim = GetComponent<Animator>();
+        //anim = GetComponentInChildren<Animator>();
     }
 
     void Update()
     {
-    
+        currentSpeed = agent.velocity.magnitude;
+        anim.SetFloat("Blend", currentSpeed);
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -23,13 +27,9 @@ public class MoveCharacter : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 agent.SetDestination(hit.point);
-                anim.SetTrigger("Walk");
+
             }
 
-        }
-        else
-        {
-            anim.SetTrigger("Idle");
         }
     }
 }
